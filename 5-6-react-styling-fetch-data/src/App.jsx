@@ -487,7 +487,7 @@ TODO 3.6: Handle Loading and Error States:
             {/* <UserList users={filteredUsers} onUserClick={handleUserClick} /> */}
             {loading && <Spinner animation='border' />}
             {error && <Alert variant="danger">{error}</Alert>}
-            {UserList users={filteredUsers} onUserClick={handleUserClick}
+            <UserList users={filteredUsers} onUserClick={handleUserClick} />
             <UserModal />
          </Container>
 
