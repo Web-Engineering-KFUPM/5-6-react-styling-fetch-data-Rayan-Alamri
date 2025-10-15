@@ -3,7 +3,7 @@ import { Form, InputGroup } from 'react-bootstrap'
 
 function SearchBar({ searchTerm, onSearchChange }) {
   return (
-    <div className="">
+    <div className="mb-4">
       <InputGroup>
         <InputGroup.Text></InputGroup.Text>
         <Form.Control
@@ -17,3 +17,10 @@ function SearchBar({ searchTerm, onSearchChange }) {
 }
 
 export default SearchBar
+// TODO 1.3: Add bootstrap in Search Bar Component  
+//    File: src/components/SearchBar.jsx  
+
+//    - Add Bootstrap classes:
+//       In div tag add properties: mb-4
+
+// --------------------------------------------------------------

@@ -335,17 +335,39 @@ function App() {
 
   const handleCloseModal = () => {
   }
+// TODO 1.1: Add Layout Containers  
+//    File: App.jsx  
+//    Tag: <Header>, <Container> (search bar container), <Footer>
+//    - Look for the empty className="" attribute inside header, Container, and footer elements. 
+//    - Add Bootstrap spacing classes like py-3, mb-4, mt-5 for padding/margin.
+
+// --------------------------------------------------------------
+
+// TODO 1.2: Style the Header Section  
+//    File: App.jsx  
+
+//    Add Bootstrap classes in Header tag:
+//       bg-primary text-white py-3 mb-4 shadow
+//    Inside header:
+//       <Container>
+//          In h1 tag add propterties: h2 mb-0
+//          In p tag add propterties: mb-0 opacity-75
+//       </Container>
+
+// --------------------------------------------------------------
+
 
   return (
+   
     <div className="app">
-      <header className="">
+      <header className="py-3 mb-4 mt-5 bg-primary text-white shadow">
         <Container>
-          <h1 className="">User Management Dashboard</h1>
-          <p className="">Manage and view user information</p>
+          <h1 className="h2 mb-0">User Management Dashboard</h1>
+          <p className="mb-0 opacity-75">Manage and view user information</p>
         </Container>
       </header>
 
-      <Container className="">
+      <Container className="py-3 mb-4 mt-5">
         <SearchBar />
 
         {/* {loading && <Spinner ... />} */}
@@ -355,7 +377,7 @@ function App() {
         <UserModal />
       </Container>
 
-      <footer className="">
+      <footer className="py-3 mb-4 mt-5 bg-light">
         <Container>
           <p className="text-center text-muted mb-0">
             &copy; 2024 User Management Dashboard
@@ -367,3 +389,9 @@ function App() {
 }
 
 export default App
+// --------------------------------------------------------------
+// TODO 1.7: Add Footer  
+//    File: App.jsx  
+//    Tag: <footer>
+//    Add Bootstrap classes:
+//       bg-light py-4 mt-5
