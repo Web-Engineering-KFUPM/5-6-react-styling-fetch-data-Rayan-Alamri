@@ -323,75 +323,189 @@ import SearchBar from './components/SearchBar'
 import UserModal from './components/UserModal'
 
 function App() {
-  const [users, setUsers] = useState([])
+   const [users, setUsers] = useState([]);
+   const [filteredUsers, setFilteredUsers] = useState([]);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState(null);
+   const [searchTerm, setSearchTerm] = useState('');
+   const [showModal, setShowModal] = useState(false);
+   const [selectedUser, setSelectedUser] = useState(null);
+   // TODO 3.3: Fetch User Data from API:
+   //    - Use the endpoint: https://jsonplaceholder.typicode.com/users  
+   //    - Write the fetching logic inside a useEffect hook that runs only once (empty dependency array).  
 
-  useEffect(() => {
-    {/*API fetch logic*/}
+   //    Steps inside useEffect:
+   //        a) Set loading to true.  
+   //           Example: `setLoading(true);`
+   //        b) Fetch the data from the API using fetch().  
+   //           Example: `const response = await fetch('https://jsonplaceholder.typicode.com/users');`
+   //        c) Convert the response to JSON.  
+   //           Example: `const data = await response.json();`
+   //        d) Store data in state using setUsers and setFilteredUsers.  
+   //           Example: `setUsers(data); setFilteredUsers(data);`
+   //        e) Handle errors using try...catch to display an error message.  
+   //           Example: `catch (err) { setError(err.message); }`
+   //        f) Set loading to false in finally block to stop the spinner.  
+   //           Example: `finally { setLoading(false); }`
 
-  }, [])
+   //    Hint: 
+   //    - You can define an async function *inside* useEffect like:
+   //      ```jsx
+   //      useEffect(() => {
+   //        const fetchUsers = async () => {
+   //          // your fetch logic here
+   //        };
+   //        fetchUsers();
+   //      }, []);
+   //      ```
+   //    - Don’t forget to include an empty dependency array `[]` so it runs only once.
 
-  const handleUserClick = (user) => {
-  }
-
-  const handleCloseModal = () => {
-  }
-// TODO 1.1: Add Layout Containers  
-//    File: App.jsx  
-//    Tag: <Header>, <Container> (search bar container), <Footer>
-//    - Look for the empty className="" attribute inside header, Container, and footer elements. 
-//    - Add Bootstrap spacing classes like py-3, mb-4, mt-5 for padding/margin.
-
-// --------------------------------------------------------------
-
-// TODO 1.2: Style the Header Section  
-//    File: App.jsx  
-
-//    Add Bootstrap classes in Header tag:
-//       bg-primary text-white py-3 mb-4 shadow
-//    Inside header:
-//       <Container>
-//          In h1 tag add propterties: h2 mb-0
-//          In p tag add propterties: mb-0 opacity-75
-//       </Container>
-
-// --------------------------------------------------------------
+   // --------------------------------------------------------------
 
 
-  return (
-   
-    <div className="app">
-      <header className="py-3 mb-4 mt-5 bg-primary text-white shadow">
-        <Container>
-          <h1 className="h2 mb-0">User Management Dashboard</h1>
-          <p className="mb-0 opacity-75">Manage and view user information</p>
-        </Container>
-      </header>
+   useEffect(() => {
+      {/*API fetch logic*/ }
+      const fetchUsers = async () => {
+         setLoading(true);
+         try {
+            const response = await fetch('https://jsonplaceholder.typicode.com/users');
+            const data = await response.json();
+            setUsers(data);
+            setFilteredUsers(data);
+         } catch (err) {
+            setError(err.message);
+         } finally {
+            setLoading(false);
+         }
+      };
+      fetchUsers();
 
-      <Container className="py-3 mb-4 mt-5">
-        <SearchBar />
+   }, [])
+   //    --------------------------------------------------------------
+   // TODO 3.4: Filter Users by Search:
+   //    Use another useEffect that runs when searchTerm or users change.  
+   //    - Inside it:
+   //        a) If searchTerm is empty → show all users.  
+   //           Example: `setFilteredUsers(users);`
+   //        b) Else → filter users whose name matches the search term.  
+   //           Example: 
+   //           ```jsx
+   //           const filtered = users.filter(user =>
+   //             user.name.toLowerCase().includes(searchTerm.toLowerCase())
+   //           );
+   //           setFilteredUsers(filtered);
+   //           ```
+   //    Hint: Dependency array should include `[searchTerm, users]`.
 
-        {/* {loading && <Spinner ... />} */}
-        {/* {error && <Alert ...>{error}</Alert>} */}
-        {/* <UserList users={filteredUsers} onUserClick={handleUserClick} /> */}
+   // --------------------------------------------------------------
 
-        <UserModal />
-      </Container>
 
-      <footer className="py-3 mb-4 mt-5 bg-light">
-        <Container>
-          <p className="text-center text-muted mb-0">
-            &copy; 2024 User Management Dashboard
-          </p>
-        </Container>
-      </footer>
-    </div>
-  )
+   useEffect(() => {
+      if (searchTerm === '') {
+         setFilteredUsers(users);
+      } else {
+         const filtered = users.filter(user =>
+            user.name.toLowerCase().includes(searchTerm.toLowerCase())
+         );
+         setFilteredUsers(filtered);
+      }
+   }, [searchTerm, users])
+
+   // --------------------------------------------------------------
+   // TODO 3.5: Open and close the user modal:
+   //    - Function: handleUserClick
+   //        a) Set the selected user in state using setSelectedUser(user)
+   //        b) Show the modal by setting setShowModal(true)
+
+   //     - Function: handleCloseModal
+   //        a) Hide the modal by setting setShowModal(false)
+   //        b) Reset the selected user to null using setSelectedUser(null)
+
+   // --------------------------------------------------------------
+
+   const handleUserClick = (user) => {
+      setSelectedUser(user);
+      setShowModal(true);
+   }
+
+   const handleCloseModal = () => {
+      setShowModal(false);
+      setSelectedUser(null);
+   }
+   // TODO 1.1: Add Layout Containers  
+   //    File: App.jsx  
+   //    Tag: <Header>, <Container> (search bar container), <Footer>
+   //    - Look for the empty className="" attribute inside header, Container, and footer elements. 
+   //    - Add Bootstrap spacing classes like py-3, mb-4, mt-5 for padding/margin.
+
+   // --------------------------------------------------------------
+
+   // TODO 1.2: Style the Header Section  
+   //    File: App.jsx  
+
+   //    Add Bootstrap classes in Header tag:
+   //       bg-primary text-white py-3 mb-4 shadow
+   //    Inside header:
+   //       <Container>
+   //          In h1 tag add propterties: h2 mb-0
+   //          In p tag add propterties: mb-0 opacity-75
+   //       </Container>
+
+   // --------------------------------------------------------------
+
+
+   return (
+
+      <div className="app">
+         <header className="py-3 mb-4 mt-5 bg-primary text-white shadow">
+            <Container>
+               <h1 className="h2 mb-0">User Management Dashboard</h1>
+               <p className="mb-0 opacity-75">Manage and view user information</p>
+            </Container>
+         </header>
+
+         <Container className="py-3 mb-4 mt-5">
+            <SearchBar />
+
+            {/* --------------------------------------------------------------
+TODO 3.6: Handle Loading and Error States:
+   Show feedback while fetching or on error.  
+   Use conditional rendering:
+       Example:
+       ```jsx
+       {loading && <Spinner animation="border" />}
+       {error && <Alert variant="danger">{error}</Alert>}
+       ```
+   Hint:  
+   - Place these conditions *before* rendering the user list.  
+   - You can import `<Spinner>` and `<Alert>` from React-Bootstrap.
+
+-------------------------------------------------------------- */}
+
+            {/* {loading && <Spinner ... />} */}
+            {/* {error && <Alert ...>{error}</Alert>} */}
+            {/* <UserList users={filteredUsers} onUserClick={handleUserClick} /> */}
+            {loading && <Spinner animation='border' />}
+            {error && <Alert variant="danger">{error}</Alert>}
+            {UserList users={filteredUsers} onUserClick={handleUserClick}
+            <UserModal />
+         </Container>
+
+         <footer className="py-3 mb-4 mt-5 bg-light">
+            <Container>
+               <p className="text-center text-muted mb-0">
+                  &copy; 2024 User Management Dashboard
+               </p>
+            </Container>
+         </footer>
+      </div>
+   )
 }
 
 export default App
 // --------------------------------------------------------------
-// TODO 1.7: Add Footer  
-//    File: App.jsx  
+// TODO 1.7: Add Footer
+//    File: App.jsx
 //    Tag: <footer>
 //    Add Bootstrap classes:
 //       bg-light py-4 mt-5
