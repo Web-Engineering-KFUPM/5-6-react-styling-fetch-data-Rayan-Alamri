@@ -488,7 +488,7 @@ TODO 3.6: Handle Loading and Error States:
             {loading && <Spinner animation='border' />}
             {error && <Alert variant="danger">{error}</Alert>}
             <UserList users={filteredUsers} onUserClick={handleUserClick} />
-            <UserModal />
+            <UserModal show={showModal} user={selectedUser} onHide={handleCloseModal} />
          </Container>
 
          <footer className="py-3 mb-4 mt-5 bg-light">
